@@ -3,13 +3,13 @@ services:
   # A backend which provides basic authentication and CRUD access to the Postgress DB from the client
   backend-api:
     build:
-      context: https://github.com/powersync-ja/powersync-nodejs-backend-todolist-demo.git
+      context: ../attendee-list-backend
     environment:
       DATABASE_TYPE: ${BACKEND_DATABASE_TYPE}
       DATABASE_URI: ${BACKEND_DATABASE_URI}
       # From the PowerSync service name
       # This is just used to populate the JWT audience
-      POWERSYNC_URL: powersync-dev
+      POWERSYNC_URL: http://localhost:8080
 
       # Keys here for demonstration
       POWERSYNC_PUBLIC_KEY: ${JWKS_PUBLIC_KEY}

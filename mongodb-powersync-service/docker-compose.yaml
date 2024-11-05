@@ -4,7 +4,7 @@ include:
   # Creates a MongoDB replica set. This is used for internal and data storage
   - path: ./mongo.yaml
 
-  # Demo NodeJS backend server and front-end web client
+  # NodeJS backend server
   - path: ./backend-api.yaml
 
 services:
