@@ -26,7 +26,7 @@ client_auth:
   # JWKS URIs can be specified here
   jwks_uri: !env PS_JWKS_URL
 
-  audience: ["powersync-dev", "powersync"]
+  audience: ["powersync-dev", "powersync", "http://localhost:8080"]
 
 api:
   tokens:

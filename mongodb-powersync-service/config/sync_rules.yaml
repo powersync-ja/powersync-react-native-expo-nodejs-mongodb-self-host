@@ -7,4 +7,3 @@ bucket_definitions:
     data:
       # mongodb uses _id as the primary key. * excludes _ fields.
       - select _id as id, * from attendee
-      - select _id as id, * from event

@@ -3,7 +3,8 @@ import { column, Schema, Table } from '@powersync/react-native';
 const attendee = new Table({
     first_name: column.text,
     last_name: column.text,
-    email_address: column.text
+    email: column.text,
+    checked_in: column.integer
 });
 
 const event = new Table({

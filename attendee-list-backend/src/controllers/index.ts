@@ -1,15 +1,17 @@
 import { Router, Response, Request } from "express";
 import AuthController from "./authController";
+import DataController from "./dataController";
 
 export default class Controllers {
     public router: Router;
 
     private authController: AuthController = new AuthController();
+    private dataController: DataController = new DataController();
 
     constructor() {
         this.router = Router();
         this.router.use("/api/auth", this.authController.router);
-        // this.router.use("/api/data", this.dataController.router);
+        this.router.use("/api/upload_data", this.dataController.router);
         this.router.get("/", this.landingPageController);
     }
 
