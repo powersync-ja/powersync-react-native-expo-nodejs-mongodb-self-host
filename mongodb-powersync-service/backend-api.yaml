@@ -1,20 +1,21 @@
 services:
 
-  # A backend which provides basic authentication and CRUD access to the Postgress DB from the client
+  # A backend which provides basic tokens and CRUD access to MongoDB from the client
   backend-api:
     build:
       context: ../attendee-list-backend
+      dockerfile: ../attendee-list-backend/Dockerfile
     environment:
       DATABASE_TYPE: ${BACKEND_DATABASE_TYPE}
       DATABASE_URI: ${BACKEND_DATABASE_URI}
       # From the PowerSync service name
       # This is just used to populate the JWT audience
-      POWERSYNC_URL: http://localhost:8080
+      POWERSYNC_URL: ${POWERSYNC_URI}
 
       # Keys here for demonstration
       POWERSYNC_PUBLIC_KEY: ${JWKS_PUBLIC_KEY}
       POWERSYNC_PRIVATE_KEY: ${JWKS_PRIVATE_KEY}
-      JWT_ISSUER: powersync-dev
+      JWT_ISSUER: ${POWERSYNC_URI}
 
       PORT: ${BACKEND_PORT}
     ports:
