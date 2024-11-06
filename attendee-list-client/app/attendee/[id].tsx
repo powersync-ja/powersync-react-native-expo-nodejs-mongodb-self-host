@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {StyleSheet, View} from 'react-native';
 import {Stack, useLocalSearchParams} from "expo-router";
 import {useSystem} from "@/libs/powersync/System";
-import {Paragraph, Switch} from "react-native-paper";
+import {Button, Paragraph, Switch, TextInput} from "react-native-paper";
 
 export default function Attendee() {
     const { powersync } = useSystem();
@@ -10,8 +10,10 @@ export default function Attendee() {
     const attendee_id = params.id;
 
     const [isLoading, setIsLoading] = useState(false);
-    const [attendee, setAttendee] = useState<any | null>(null);
     const [isSwitchOn, setIsSwitchOn] = useState(false);
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
+    const [email, setEmail] = useState("");
 
     useEffect(() => {
         const loadAttendees = async () => {
@@ -19,7 +21,10 @@ export default function Attendee() {
             const data = await powersync.execute("SELECT * FROM attendee WHERE id = ?", [attendee_id]);
             const rows = data.rows;
             const attendee = rows?._array[0];
-            setAttendee(attendee);
+
+            setFirstName(attendee.first_name);
+            setLastName(attendee.last_name);
+            setEmail(attendee.email);
             setIsSwitchOn(() => {
                 return attendee.checked_id === 1;
             })
@@ -28,11 +33,14 @@ export default function Attendee() {
         loadAttendees()
     }, [])
 
-    const onToggleSwitch = async () => {
-        setIsSwitchOn(!isSwitchOn)
-        if(isSwitchOn) {
-            await powersync.execute("UPDATE attendee SET checked_id = ? WHERE id = ?", [1, attendee_id]);
-        }
+    const onToggleSwitch = () => {
+        setIsSwitchOn(!isSwitchOn);
+    }
+
+    const handleSave = async () => {
+        const int = !isSwitchOn ? 0 : 1;
+        console.log(int);
+        await powersync.execute("UPDATE attendee SET checked_in = ?, first_name = ?, last_name = ?, email = ? WHERE id = ?", [int, first_name, last_name, email ,attendee_id]);
     }
 
     if (isLoading) {
@@ -54,10 +62,26 @@ export default function Attendee() {
                         title: "Attendee Information"
                     }}
                 />
-                <Paragraph style={styles.text}>First Name: {attendee?.first_name}</Paragraph>
-                <Paragraph style={styles.text}>Last Name: {attendee?.last_name}</Paragraph>
-                <Paragraph style={styles.text}>Email: {attendee?.email}</Paragraph>
+                <TextInput style={{margin: 20}}
+                    label="First name"
+                    value={first_name}
+                    onChangeText={text => setFirstName(text)}
+                />
+                <TextInput style={{margin: 20}}
+                    label="Last name"
+                    value={last_name}
+                    onChangeText={text => setLastName(text)}
+                />
+
+                <TextInput style={{margin: 20}}
+                    label="Email"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                />
+
+                <Paragraph style={styles.text}>Checked In?</Paragraph>
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+                <Button onPress={handleSave}>Save</Button>
             </View>
         );
     }
