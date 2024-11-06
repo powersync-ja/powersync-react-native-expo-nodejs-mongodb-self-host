@@ -28,7 +28,6 @@ export default class Server {
         );
         console.log("Server Config:", this.options);
         this.app.use(logger);
-
         this.app.use(this.controllers.router);
     }
 

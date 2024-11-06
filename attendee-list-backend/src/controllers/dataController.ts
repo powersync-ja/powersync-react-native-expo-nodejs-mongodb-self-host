@@ -1,5 +1,4 @@
 import {Router, Request, Response} from "express";
-import config from "../config";
 
 export default class DataController {
     public router: Router;
@@ -10,24 +9,30 @@ export default class DataController {
     }
 
     private initRoutes() {
-        this.router.patch("/", this.patch);
+        this.router.get("/", (req, res) => {
+            res.send("Hi");
+        })
+        this.router.patch("/", this.update);
         this.router.put("/", this.put);
         this.router.delete("/", this.delete);
     }
 
-    private async patch(req: Request, res: Response) {
+    private async update(req: Request, res: Response) {
+        console.log(req.body);
         if (!req.body) {
             res.status(400).send({
                 message: 'Invalid body provided'
             });
             return;
         }
+
         res.send({
 
         });
     }
 
     private async put(req: Request, res: Response) {
+        console.log(req.body);
         if (!req.body) {
             res.status(400).send({
                 message: 'Invalid body provided'
@@ -40,6 +45,7 @@ export default class DataController {
     }
 
     private async delete(req: Request, res: Response) {
+        console.log(req.body);
         if (!req.body) {
             res.status(400).send({
                 message: 'Invalid body provided'
