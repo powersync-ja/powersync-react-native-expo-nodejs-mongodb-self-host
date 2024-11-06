@@ -5,6 +5,7 @@ const config = {
     database: {
         type: process.env.DATABASE_TYPE || 'postgres',
         uri: process.env.DATABASE_URI ? process.env.DATABASE_URI : '',
+        database: process.env.DATABASE_NAME ? process.env.DATABASE_NAME : '',
     },
     powersync: {
         url: process.env.POWERSYNC_URL ? process.env.POWERSYNC_URL : '',

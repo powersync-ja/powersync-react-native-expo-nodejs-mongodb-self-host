@@ -5,13 +5,13 @@ import DataController from "./dataController";
 export default class Controllers {
     public router: Router;
 
-    private authController: AuthController = new AuthController();
-    private dataController: DataController = new DataController();
-
     constructor() {
+        const authController: AuthController = new AuthController();
+        const dataController: DataController = new DataController();
+
         this.router = Router();
-        this.router.use("/api/auth", this.authController.router);
-        this.router.use("/api/upload_data", this.dataController.router);
+        this.router.use("/api/auth", authController.router);
+        this.router.use("/api/upload_data", dataController.router);
         this.router.get("/", this.landingPageController);
     }
 

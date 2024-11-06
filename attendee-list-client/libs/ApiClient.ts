@@ -20,26 +20,15 @@ export class ApiClient {
         return await response.json();
     }
 
-    async getSession() {
-        const response = await fetch(`${this.baseUrl}/api/get_session/`, {
-            method: 'GET',
-            headers: this.headers
-        });
-        if (response.status !== 200) {
-            throw new Error(`Server returned HTTP ${response.status}`);
-        }
-    }
-
     async update(data: any): Promise<void> {
         const url = `${this.baseUrl}/api/upload_data`;
-        console.log(url);
         const response = await fetch(url, {
             method: 'PATCH',
             headers: this.headers,
             body: JSON.stringify(data)
         });
         if (response.status !== 200) {
-            throw new Error(`Server returned HTTP ${response.status}`);
+            throw new Error(`Server returned HTTP ${response.status} ${response.body}`);
         }
     }
 

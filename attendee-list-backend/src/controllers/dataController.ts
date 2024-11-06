@@ -1,4 +1,6 @@
 import {Router, Request, Response} from "express";
+import config from "../config";
+import MongoPersistence from "../mongo/mongoPersistence";
 
 export default class DataController {
     public router: Router;
@@ -9,51 +11,75 @@ export default class DataController {
     }
 
     private initRoutes() {
-        this.router.get("/", (req, res) => {
-            res.send("Hi");
-        })
         this.router.patch("/", this.update);
         this.router.put("/", this.put);
         this.router.delete("/", this.delete);
     }
 
     private async update(req: Request, res: Response) {
-        console.log(req.body);
-        if (!req.body) {
-            res.status(400).send({
-                message: 'Invalid body provided'
+        try {
+            if (!req.body) {
+                res.status(400).send({
+                    message: 'Invalid body provided'
+                });
+                return;
+            }
+            const mongoPersistence = new MongoPersistence({
+                name: config.database.database,
+                uri: config.database.uri
             });
-            return;
+            await mongoPersistence.init();
+            await mongoPersistence.update(req.body);
+            res.status(200).send();
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({
+                message: err,
+            });
         }
-
-        res.send({
-
-        });
     }
 
     private async put(req: Request, res: Response) {
-        console.log(req.body);
-        if (!req.body) {
-            res.status(400).send({
-                message: 'Invalid body provided'
+        try {
+            if (!req.body) {
+                res.status(400).send({
+                    message: 'Invalid body provided'
+                });
+                return;
+            }
+            const mongoPersistence = new MongoPersistence({
+                name: config.database.database,
+                uri: config.database.uri
             });
-            return;
+            await mongoPersistence.init();
+            await mongoPersistence.upsert(req.body);
+            res.status(200).send();
+        } catch (err) {
+            res.status(500).send({
+                message: err,
+            });
         }
-        res.send({
-
-        });
     }
 
     private async delete(req: Request, res: Response) {
-        console.log(req.body);
-        if (!req.body) {
-            res.status(400).send({
-                message: 'Invalid body provided'
+        try {
+            if (!req.body) {
+                res.status(400).send({
+                    message: 'Invalid body provided'
+                });
+                return;
+            }
+            const mongoPersistence = new MongoPersistence({
+                name: config.database.database,
+                uri: config.database.uri
             });
-            return;
+            await mongoPersistence.init();
+            await mongoPersistence.delete(req.body);
+            res.status(200).send();
+        } catch (err) {
+            res.status(500).send({
+                message: err,
+            });
         }
-        res.send({
-
-        });
     }
 }

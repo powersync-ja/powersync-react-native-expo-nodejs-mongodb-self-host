@@ -46,7 +46,7 @@ export class BackendConnector implements PowerSyncBackendConnector {
             // or edge functions to process the entire transaction in a single call.
             for (const op of transaction.crud) {
                 lastOp = op;
-                const record = { table: op.table, data: { ...op.opData, id: op.id } };
+                const record = { table: op.table, id: op.id, data: { ...op.opData } };
                 console.log(record);
                 switch (op.op) {
                     case UpdateType.PUT:

@@ -8,6 +8,7 @@ services:
     environment:
       DATABASE_TYPE: ${BACKEND_DATABASE_TYPE}
       DATABASE_URI: ${BACKEND_DATABASE_URI}
+      DATABASE_NAME: ${DATABASE_NAME}
       # From the PowerSync service name
       # This is just used to populate the JWT audience
       POWERSYNC_URL: ${POWERSYNC_URI}
